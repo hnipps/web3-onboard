@@ -15,6 +15,15 @@ async function connect(
     }
   }
 
+  const styleEl = document.createElement('style')
+
+  styleEl.innerHTML = `
+    body {
+      overflow: hidden;
+    }
+  `
+  document.body.appendChild(styleEl)
+
   const { chains } = state.get()
 
   // Wallets require the chains for initializing providers,
@@ -44,6 +53,10 @@ async function connect(
     withLatestFrom(wallets$),
     pluck(1)
   )
+
+  firstValueFrom(result$).then(() => {
+    styleEl.remove()
+  })
 
   return firstValueFrom(result$)
 }
